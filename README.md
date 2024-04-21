@@ -16,4 +16,5 @@
 Создать образы и контейнеры DOCKER с помощью команд
 
    -docker-compose build
+   
    -docker-compose up
