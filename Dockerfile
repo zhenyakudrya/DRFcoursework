@@ -1,9 +1,9 @@
-FROM python:3.11
+FROM python:3
 
-RUN pip install django celery
+WORKDIR /code
 
-COPY ./requirements.txt /code/
+COPY ./requirements.txt .
 
-WORKDIR / code
+RUN pip install -r requirements.txt
 
-CMD python manage.py runserver 0.0.0.0:8000
+COPY . .

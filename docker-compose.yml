@@ -1,16 +1,8 @@
 version: '3'
 
 services:
-  django:
-    build: .
-    ports:
-      - "8002:8000"
-    depends_on:
-      - db
-      - redis
-
   redis:
-    image: redis
+    image: redis:6.2.4-alpine
     ports:
       - "6379:6379"
 
@@ -38,12 +30,17 @@ services:
     volumes:
       - .:/code
     depends_on:
-      - db
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env.docker
 
   celery:
     build: .
     tty: true
     command: celery -A config worker -l info
+    env_file:
+      - .env.docker
     depends_on:
       - redis
       - app
@@ -52,6 +49,8 @@ services:
     build: .
     tty: true
     command: celery -A config beat -l info
+    env_file:
+      - .env.docker
     depends_on:
       - redis
       - app
